@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#6d4ba5">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+<title>TREASURE.exe — Find Your TREASURE</title>
+<style>
+:root{
+  --ink:#302347;--deep:#4a3175;--purple:#7251a6;--violet:#9b7bd1;--lav:#d8c8f5;
+  --pink:#f1b9dc;--pale:#fff8ff;--paper:#f4efff;--mint:#c8f3e5;--yellow:#ffe7a6;
+  --shadow:#35264d;--pixel:3px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"DotGothic16","Microsoft JhengHei",sans-serif;background:#ded2f6;overflow-x:hidden;letter-spacing:.35px}
+button,input,textarea,select{font-family:"DotGothic16","Microsoft JhengHei",sans-serif}
+.logo,.titlebar,.system-tag,.topline,.badge,.pill,.taskbar,.start-btn,.section-title,.action strong,.desktop-icon,.progress-label,.tiny,.modal button{letter-spacing:.6px}
+.logo,.exe{font-family:"Press Start 2P","DotGothic16","Microsoft JhengHei",sans-serif}
+.logo{font-size:clamp(25px,5.5vw,52px);line-height:1.45;letter-spacing:-1px;overflow-wrap:anywhere}
+.titlebar{border-bottom:3px solid #3f2b63;text-shadow:1px 1px #3d285f}
+.window{border:3px solid #fff;border-right-color:#75579f;border-bottom-color:#75579f;box-shadow:6px 6px 0 #4c356f}
+.titlebar .win-controls span{border:2px outset #fff}
+.action,.start-btn,.badge,.system-tag,.panel,.modal,.progress,.desktop-icon{border-radius:0!important}
+.action{border:3px solid #fff;border-right-color:#8f73ba;border-bottom-color:#8f73ba;box-shadow:4px 4px 0 #8c6db8}
+.action:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #8c6db8}
+.hero{background-color:#fffaff;background-image:radial-gradient(#e7d7fa 1px,transparent 1px);background-size:8px 8px}
+.system-tag{border:2px dashed #8b6ab7;box-shadow:3px 3px 0 #d8c5f0}
+.badge{border:2px solid #d9c7f1;box-shadow:3px 3px 0 #d6b8e9}
+.progress{border-radius:0}
+.progress-inner{background:repeating-linear-gradient(90deg,#a486d3 0 8px,#d8b5ee 8px 16px)}
+.modal{box-shadow:8px 8px 0 #2d2045}
+::selection{background:#d9b7f1;color:#392452}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible{outline:3px dashed #ef83c9;outline-offset:3px}
+a{color:#5c3d91}
+.wallpaper{min-height:100vh;position:relative;isolation:isolate;padding:24px 16px 76px;background:
+ radial-gradient(circle at 15% 15%,#f9d8f0 0 2px,transparent 3px),
+ radial-gradient(circle at 80% 30%,#fff 0 2px,transparent 3px),
+ linear-gradient(135deg,#b7a0e7,#eadcfb 45%,#b4a0dc)}
+.wallpaper:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.32;background-image:linear-gradient(#fff5 1px,transparent 1px),linear-gradient(90deg,#fff5 1px,transparent 1px);background-size:24px 24px}
+.float-star{position:fixed;z-index:-1;color:#fff;font-size:24px;text-shadow:2px 2px #7e5bb5;animation:float 5s steps(4,end) infinite;image-rendering:pixelated}
+.float-star:nth-child(1){left:5%;top:18%}.float-star:nth-child(2){right:7%;top:25%;animation-delay:1s}.float-star:nth-child(3){left:12%;bottom:18%;animation-delay:2s}.float-star:nth-child(4){right:14%;bottom:16%;animation-delay:.7s}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-14px) rotate(12deg)}}
+@keyframes blink{50%{opacity:.28}}
+@keyframes pixelBlink{0%,49%{opacity:1}50%,100%{opacity:.35}}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(500%)}}
+@keyframes pop{0%{transform:scale(.78);opacity:0}75%{transform:scale(1.03)}100%{transform:scale(1);opacity:1}}
+@keyframes twinkle{0%,100%{opacity:.45;transform:scale(.8)}50%{opacity:1;transform:scale(1.2)}}
+@keyframes loading{0%{width:0}100%{width:100%}}
+.desktop{max-width:1040px;margin:0 auto;position:relative}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#4a3470;font-size:12px;font-weight:800;letter-spacing:1.3px;margin:0 0 15px}
+.topline .status{background:#f9efffbd;border:2px solid white;padding:7px 10px;box-shadow:3px 3px #6d4ba5}
+.window{background:var(--pale);border:3px solid #fff;border-right-color:#8b70b6;border-bottom-color:#8b70b6;box-shadow:7px 7px 0 #5b4388;position:relative}
+.titlebar{min-height:38px;padding:7px 9px;display:flex;align-items:center;justify-content:space-between;gap:10px;color:white;background:linear-gradient(90deg,#5e3f93,#a58bd6);font-weight:900;letter-spacing:.3px}
+.titlebar small{font-weight:600;opacity:.9}
+.win-controls{display:flex;gap:4px}.win-controls span{width:20px;height:19px;background:#f8edff;color:#55377f;display:grid;place-items:center;border:2px outset #fff;font-size:12px}
+.main-window{overflow:hidden}
+.main-window:after{content:"";position:absolute;left:0;right:0;height:80px;top:0;background:linear-gradient(transparent,#fff3,transparent);animation:scan 8s linear infinite;pointer-events:none;opacity:.35}
+.hero{padding:clamp(22px,5vw,46px);text-align:center;position:relative;background:linear-gradient(180deg,#fffaff,#f1e9ff)}
+.system-tag{display:inline-block;background:#e8dafa;border:2px dotted #8b6ab7;padding:6px 11px;font-size:11px;letter-spacing:1px;margin-bottom:16px}
+.logo{font-size:clamp(36px,8vw,72px);line-height:1;margin:0;font-weight:1000;letter-spacing:-2px;color:#63418f;text-shadow:3px 3px 0 #f4bde1,6px 6px 0 #c9b3ef}
+.logo .exe{color:#d56bb4}
+.jp{margin:16px 0 7px;font-weight:900;letter-spacing:3px;color:#8c62ba}
+.subtitle{font-size:14px;line-height:1.8;max-width:600px;margin:0 auto;color:#695584}
+.pixel-heart{display:inline-block;animation:twinkle 1.8s infinite}
+.hero-badges{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:19px 0}
+.badge{font-size:11px;background:#fff;border:2px solid #d9c7f1;padding:6px 9px;box-shadow:2px 2px #d6b8e9}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:22px}
+.action{border:3px solid white;border-right-color:#8f73ba;border-bottom-color:#8f73ba;background:#ddcff7;padding:17px 14px;min-height:125px;color:#422b68;text-align:left;box-shadow:4px 4px #8c6db8;transition:transform .16s,filter .16s;position:relative;overflow:hidden}
+.action:nth-child(2){background:#f8d9ee}
+.action:hover{transform:translate(-2px,-2px);filter:saturate(1.12);box-shadow:6px 6px #8c6db8}
+.action .emoji{font-size:27px;display:block;margin-bottom:9px}
+.action strong{display:block;font-size:15px;line-height:1.5}
+.action small{display:block;margin-top:7px;font-size:11px;opacity:.78}
+.action:after{content:"▶";position:absolute;right:12px;bottom:10px;color:#8b5db6;font-size:12px}
+.desktop-icons{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;padding:17px}
+.desktop-icon{border:0;background:transparent;color:#4e3774;min-width:76px;font-size:11px;text-align:center;text-shadow:1px 1px white}
+.desktop-icon span{display:block;font-size:25px;margin-bottom:4px;filter:drop-shadow(2px 2px #fff)}
+.content-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:16px;margin-top:18px}
+.panel{padding:0}
+.panel-body{padding:16px;line-height:1.8;font-size:13px}
+.panel-body ul{padding-left:20px;margin:8px 0}
+.tiny{font-size:11px;color:#79658f}
+.section-title{font-size:17px;margin:0 0 10px;color:#62418f}
+.pill{display:inline-block;padding:3px 8px;background:#eee4ff;border:1px solid #cdb7ed;font-size:10px;margin:2px}
+.taskbar{position:fixed;z-index:20;bottom:0;left:0;right:0;min-height:42px;background:#eee6fc;border-top:3px solid #fff;box-shadow:0 -3px #9d84c7;display:flex;align-items:center;justify-content:space-between;padding:5px 12px;gap:10px}
+.start-btn{border:2px outset white;background:#d4c3f0;color:#49306e;font-weight:900;padding:6px 12px;box-shadow:2px 2px #9d84c7}
+.task-right{font-size:11px;display:flex;align-items:center;gap:10px}
+.pixel-cat{font-size:17px}
+.modal-backdrop{position:fixed;inset:0;background:#26153fb8;z-index:50;display:none;align-items:center;justify-content:center;padding:14px;backdrop-filter:blur(3px)}
+.modal-backdrop.show{display:flex}
+.modal{width:min(660px,100%);max-height:92vh;overflow:auto;animation:pop .28s ease-out;background:#fff9ff;border:3px solid white;border-right-color:#8063a8;border-bottom-color:#8063a8;box-shadow:9px 9px 0 #2d2045}
+.modal .titlebar{position:sticky;top:0;z-index:2}
+.modal-content{padding:clamp(17px,4vw,28px)}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;font-weight:800;color:#70558f;margin:5px 0}
+.progress{height:14px;border:2px solid #aa90cd;background:#eee4fb;padding:2px}
+.progress-inner{height:100%;width:0;background:repeating-linear-gradient(90deg,#a486d3 0 10px,#d8b5ee 10px 20px);transition:width .35s}
+.question-count{font-size:11px;color:#9977bd;letter-spacing:1px;font-weight:900}
+.question{font-size:clamp(19px,4vw,25px);line-height:1.5;margin:8px 0 16px;color:#4f3477}
+.question-sub{font-size:12px;color:#826d9c;margin-bottom:16px}
+.options{display:grid;gap:10px}
+.option{display:flex;align-items:flex-start;gap:11px;text-align:left;width:100%;border:2px solid #d9c9f1;background:#fff;padding:12px;color:#493568;line-height:1.55;transition:.15s}
+.option:hover{background:#f5eaff;border-color:#a98ad6;transform:translateX(3px)}
+.option .letter{display:grid;place-items:center;flex:0 0 28px;height:28px;background:#e5d8fa;color:#61428b;font-weight:900}
+.option.selected{background:#f8def0;border-color:#d67dbb;box-shadow:3px 3px #e8b5d7}
+.modal-actions{display:flex;gap:10px;justify-content:space-between;margin-top:20px}
+.btn{border:3px solid white;border-right-color:#8e72b6;border-bottom-color:#8e72b6;background:#d7c5f1;color:#472f6e;padding:10px 15px;font-weight:900;box-shadow:3px 3px #a28ac6}
+.btn.primary{background:#6e4d9f;color:white}
+.btn.pink{background:#f5d1e9}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.result{text-align:center}
+.result-kicker{font-size:11px;letter-spacing:2px;color:#9870bc;font-weight:900}
+.result-name{font-size:clamp(27px,6vw,42px);color:#66428f;line-height:1.2;margin:10px 0}
+.result-avatar{width:116px;height:116px;margin:12px auto;background:linear-gradient(135deg,#e6d9ff,#f7d7ed);border:4px solid white;outline:2px dashed #9d7bc5;display:grid;place-items:center;font-size:54px;box-shadow:5px 5px #c1a9e4;animation:float 3s infinite}
+.member-tagline{font-weight:700;color:#7952a5;font-size:1.04em}.pixel-note{margin:14px 0;padding:12px;border:2px dashed #a88acb;background:#f8f1ff;line-height:1.9;text-align:left}.result-card{margin:18px auto 12px;text-align:left;background:#f7f0ff;border:2px dashed #bda5df;padding:15px;max-width:520px;line-height:1.8;font-size:13px}
+.score{font-size:13px;color:#8d60b1;font-weight:900}
+.result-links{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;margin:15px 0}
+.result-links a{background:#eee3ff;border:2px solid white;box-shadow:2px 2px #b39bd6;padding:8px 11px;text-decoration:none;font-size:12px;font-weight:800}
+.footer-note{text-align:center;font-size:10px;color:#695486;margin:17px 0 0;line-height:1.8}
+.toast{position:fixed;z-index:70;top:16px;left:50%;transform:translateX(-50%);display:none;background:#fff4ff;border:2px solid #fff;box-shadow:4px 4px #6d4ba5;padding:10px 15px;font-size:12px;font-weight:800}
+.toast.show{display:block;animation:pop .2s}
+@media(max-width:700px){
+ .wallpaper{padding:13px 10px 68px}.topline{font-size:10px}.actions{grid-template-columns:1fr}.action{min-height:100px}.content-grid{grid-template-columns:1fr}.hero{padding:25px 17px}.logo{letter-spacing:-1px}.desktop-icons{gap:10px}.task-right .hide-mobile{display:none}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}}
+/* PIXEL MODE: crisp corners, 8-bit rhythm, and a little CRT texture */
+body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:80;background:repeating-linear-gradient(0deg,#fff0 0 3px,#5d3b8210 3px 4px);mix-blend-mode:multiply}
+.logo .exe{display:inline-block;animation:pixelBlink 2.4s steps(1,end) infinite}
+.action .emoji,.desktop-icon span{image-rendering:pixelated;filter:drop-shadow(2px 2px 0 #d5c0f1)}
+.section-title{padding:7px 9px;background:#e9ddfa;border-left:5px solid #8e6ac0;box-shadow:3px 3px 0 #d4c1ed}
+.panel-body{line-height:2}
+button{transition:transform .12s steps(2,end),filter .12s steps(2,end)}
+button:active{transform:translate(2px,2px)!important;filter:brightness(.96)}
+@media(max-width:560px){.logo{font-size:clamp(20px,7vw,34px);letter-spacing:-1px}.titlebar{font-size:12px}.panel-body{font-size:12px}.actions{gap:10px}.action{padding:13px 10px}}
+
+.share-overlay{position:fixed;inset:0;background:#211332b9;z-index:150;display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.share-dialog{width:min(510px,100%);max-height:95dvh;overflow:auto;background:#fffaff;border:4px solid #fff;outline:3px solid #65448b;box-shadow:9px 9px 0 #38264f;animation:windowSpawn .25s steps(5,end)}
+.share-title{display:flex;align-items:center;justify-content:space-between;background:#7852a5;color:white;padding:10px 14px;font-size:13px;font-weight:bold}
+.share-close{border:2px solid #fff;background:#e9d5ff;color:#513373;font-size:18px;cursor:pointer}
+.share-body{text-align:center;padding:15px}.share-body>p{margin:5px 0 13px}.share-preview{display:block;width:min(270px,75%);height:auto;max-height:52dvh;object-fit:contain;margin:0 auto 15px;border:3px solid #d1b6e8;box-shadow:4px 4px 0 #ad8ccc}
+.share-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}.share-help{line-height:1.8;margin-top:13px!important}
+/* Japanese fan-account / nostalgic SNS details */
+.fan-post{background:#fff;border:2px solid #d8c4ed;padding:12px;box-shadow:4px 4px 0 #dfd0f2;position:relative}
+.fan-post-head{display:flex;align-items:center;gap:9px;color:#563780;font-size:12px}
+.fan-post-head small{display:block;color:#a08eaf;font-size:10px;margin-top:2px}
+.fan-avatar{display:grid;place-items:center;width:36px;height:36px;border:2px solid #ad88d1;background:#f5d6ef;color:#8c5ba9;font-size:20px}
+.fan-sparkle{margin-left:auto;color:#d493c2;font-size:20px}
+.fan-post p{margin:12px 0 8px;line-height:1.9;font-size:13px}
+.fan-translation{font-size:11px;color:#8d78a4}
+.fan-post-tags{font-size:10px;color:#9663ba;overflow-wrap:anywhere;line-height:1.8}
+.fan-post-actions{border-top:1px dashed #e0d0ef;margin-top:10px;padding-top:8px;color:#b08ac4;font-size:11px;letter-spacing:2px}
+.hero:before{content:"✧ ｡ﾟ♡ ⋆｡˚ ✦";position:absolute;top:12px;left:18px;color:#bf94d6;font-size:12px;letter-spacing:4px;pointer-events:none}
+.hero:after{content:"♡ きらきらの予感 ♡";position:absolute;right:12px;bottom:7px;color:#bf94d6;font-size:10px;letter-spacing:1px;pointer-events:none}
+.hero-badges .badge:nth-child(2){background:#fce7f5}
+.jp{font-size:clamp(14px,2.4vw,20px);text-shadow:2px 2px #f6d8ee}
+.fan-sticker{display:inline-block;transform:rotate(-4deg);background:#fbe1f1;color:#885ba8;border:2px dashed #ba91d5;padding:3px 9px;font-size:10px;margin-top:9px}
+@media(prefers-reduced-motion:reduce){.fan-sticker{transform:none}}
+</style>
+</head>
+<body>
+<div class="wallpaper">
+  <span class="float-star">✦</span><span class="float-star">♡</span><span class="float-star">✧</span><span class="float-star">★</span>
+  <main class="desktop">
+    <div class="topline"><span>✦ #TREASUREと運命の出会い ♡ きょうの推し診断</span><span class="status">● ただいまログイン中 ♡</span></div>
+    <section class="window main-window">
+      <div class="titlebar"><span>▣ TREASURE.exe — 運命検索プログラム</span><div class="win-controls"><span>_</span><span>□</span><span>×</span></div></div>
+      <div class="hero">
+        <div class="system-tag">♡ きみだけの TREASURE を見つけよう ♡</div>
+        <h1 class="logo">TREASURE<span class="exe">.exe</span></h1>
+        <p class="jp">運命の推し、見つけちゃう？ ♡</p>
+        <div class="fan-sticker">#今日の運命診断 ♡</div><p class="subtitle">某個深夜，你意外開啟了一個神祕程式。<br>輸入你的直覺，看看命運會把你帶向哪首歌、哪一位 TREASURE。</p>
+        <div class="hero-badges"><span class="badge">♡ #推し活</span><span class="badge">✦ #トレジャー</span><span class="badge">☾ #運命の出会い</span></div>
+        <div class="actions">
+          <button class="action" id="songStart"><span class="emoji">💿</span><strong>你可能會愛上的歌是⋯⋯？</strong><small>SONG DESTINY / 5 QUESTIONS</small></button>
+          <button class="action" id="memberStart"><span class="emoji">🪄</span><strong>可能會成為你推的孩子的是⋯⋯？</strong><small>MEMBER DESTINY / 7 QUESTIONS</small></button>
+        </div>
+      </div>
+      <div class="desktop-icons">
+        <button class="desktop-icon" id="aboutBtn"><span>📁</span>はじめに.txt</button>
+        <button class="desktop-icon" id="catalogBtn"><span>💿</span>曲リスト</button>
+        <button class="desktop-icon" id="membersBtn"><span>🧸</span>メンバー図鑑</button>
+        <button class="desktop-icon" id="soundBtn"><span>🔊</span>SOUND: OFF</button>
+      </div>
+    </section>
+    <div class="content-grid">
+      <section class="window panel">
+        <div class="titlebar"><span>✧ きょうのひとこと</span><small>お知らせ</small></div>
+        <div class="panel-body">
+          <h2 class="section-title">迷路也沒關係，直覺會帶路。</h2>
+          <p>這不是認真分析人格的心理測驗，而是一場以音樂、氛圍和喜好為線索的小小冒險。選你最有感覺的答案就好。</p>
+          <span class="pill">5 題 → 1 首命定曲</span><span class="pill">7 題 → 1 位命定成員</span><span class="pill">可重新挑戰</span>
+        </div>
+      </section>
+      <section class="window panel">
+        <div class="titlebar"><span>▣ 推し活メモ ♡</span><small>ひみつのメモ</small></div>
+        <div class="panel-body">
+          <div class="fan-post"><div class="fan-post-head"><span class="fan-avatar">♡</span><span><b>treasure.diary</b><small>@my_little_treasure · いま</small></span><span class="fan-sparkle">✦</span></div><p>「推し」って、出会った瞬間から特別になるのかも。♡<br><span class="fan-translation">也許從遇見的那一刻起，他就變得特別了。</span></p><div class="fan-post-tags">#TREASURE #推し活 #トレジャー好きと繋がりたい</div><div class="fan-post-actions">♡ 02:14　↻ 07　✧ 10</div></div>
+        </div>
+      </section>
+    </div>
+    <p class="footer-note">このプログラムはファン制作の非公式プロジェクトです。TREASURE / YG Entertainmentとは関係ありません。<br>選擇只是命運的小玩笑。音樂會在你心裡找到位置。♡</p>
+  </main>
+</div>
+<div class="taskbar"><button class="start-btn" id="homeBtn">⊞ START</button><div class="task-right"><span class="hide-mobile">💜 推し活中 ♡</span><span class="pixel-cat">♡ ✦ ♡</span><span id="clock">20:26</span></div></div>
+<div class="toast" id="toast">ファイルを開いています… ✧</div>
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <section class="modal">
+    <div class="titlebar"><span id="modalTitle">▣ TREASURE.exe</span><div class="win-controls"><span>_</span><span>□</span><span><button id="closeModal" aria-label="關閉視窗" style="border:0;background:transparent;color:#55377f;font-weight:900;padding:0">×</button></span></div></div>
+    <div class="modal-content" id="modalContent"></div>
+  </section>
+</div>
+<script>
+"use strict";
+const officialProfile = "https://ygfamily.com/cn/artists/treasure/profile";
+const officialDiscography = "https://ygfamily.com/cn/artists/treasure/discography";
+const youtubeSearch = title => "https://www.youtube.com/results?search_query="+encodeURIComponent("TREASURE official "+title);
+const officialYouTube = "https://www.youtube.com/@TREASURE";
+const songs = [
+ {title:"BOY",album:"THE FIRST STEP : CHAPTER ONE",lang:"韓文",tags:["energy","confidence","night"],desc:"帶著強烈節奏感的出道曲，適合想一秒進入舞台模式的你。",mood:"強烈・青春・自信"},
+ {title:"COME TO ME",album:"THE FIRST STEP : CHAPTER ONE",lang:"韓文",tags:["warm","romance","comfort"],desc:"有一種輕輕靠近、把心意說出口的溫柔感。",mood:"溫柔・靠近・心動"},
+ {title:"I LOVE YOU",album:"THE FIRST STEP : CHAPTER TWO",lang:"韓文",tags:["romance","energy","summer"],desc:"心動藏不住，像情緒突然加速的夏日告白。",mood:"熱烈・心動・明亮"},
+ {title:"B.L.T (BLING LIKE THIS)",album:"THE FIRST STEP : CHAPTER TWO",lang:"韓文",tags:["bright","friendship","summer"],desc:"閃閃發亮的青春感，適合想把日常變成快樂片段的你。",mood:"明亮・青春・友情"},
+ {title:"MMM",album:"THE FIRST STEP : CHAPTER THREE",lang:"韓文",tags:["night","confidence","energy"],desc:"節拍和氣場都很鮮明，適合喜歡夜色與舞台張力的人。",mood:"酷感・夜色・張力"},
+ {title:"ORANGE",album:"THE FIRST STEP : CHAPTER THREE",lang:"韓文",tags:["comfort","night","nostalgia"],desc:"柔和又帶點寂寞，像夜晚留給自己的小小回憶。",mood:"溫柔・懷念・夜晚"},
+ {title:"MY TREASURE",album:"THE FIRST STEP : TREASURE EFFECT",lang:"韓文",tags:["comfort","bright","hope"],desc:"像有人拍拍你的肩膀，提醒你明天也值得期待。",mood:"希望・溫暖・治癒"},
+ {title:"BE WITH ME",album:"THE FIRST STEP : TREASURE EFFECT",lang:"韓文",tags:["warm","romance","comfort"],desc:"不需要太多話，只想和重要的人待在一起。",mood:"陪伴・柔軟・安心"},
+ {title:"SLOWMOTION",album:"THE FIRST STEP : TREASURE EFFECT",lang:"韓文",tags:["nostalgia","comfort","dream"],desc:"讓時間稍微慢下來，收藏那些不想錯過的瞬間。",mood:"夢幻・慢步調・回憶"},
+ {title:"JIKJIN",album:"THE SECOND STEP : CHAPTER ONE",lang:"韓文",tags:["energy","confidence","adventure"],desc:"不繞路、直接向前衝，適合準備突破舒適圈的你。",mood:"衝勁・自信・冒險"},
+ {title:"DARARI",album:"THE SECOND STEP : CHAPTER ONE",lang:"韓文",tags:["romance","warm","bright"],desc:"帶著輕快的戀愛感，像心裡悄悄循環的一句旋律。",mood:"可愛・心動・輕盈"},
+ {title:"U",album:"THE SECOND STEP : CHAPTER TWO",lang:"韓文",tags:["romance","bright","summer"],desc:"有點俏皮的心動感，適合相信相遇會發生的人。",mood:"心動・明亮・俏皮"},
+ {title:"HELLO",album:"THE SECOND STEP : CHAPTER TWO",lang:"韓文",tags:["bright","friendship","energy"],desc:"一聲招呼就能把氣氛點亮，像和朋友一起出發。",mood:"歡樂・友情・活力"},
+ {title:"HOLD IT IN",album:"THE SECOND STEP : CHAPTER TWO",lang:"韓文",tags:["nostalgia","night","comfort"],desc:"情緒不一定要大聲說出來，有些感受適合慢慢消化。",mood:"內斂・夜晚・思念"},
+ {title:"BONA BONA",album:"REBOOT",lang:"韓文",tags:["confidence","energy","night"],desc:"強烈舞台氣場與自信宣言，適合不想再隱藏光芒的你。",mood:"氣勢・自信・舞台"},
+ {title:"I WANT YOUR LOVE",album:"REBOOT",lang:"韓文",tags:["romance","energy","night"],desc:"直球又帶點危險感，像在霓虹燈下追逐心動。",mood:"直球・夜色・熱烈"},
+ {title:"RUN",album:"REBOOT",lang:"韓文",tags:["adventure","energy","hope"],desc:"把猶豫留在身後，朝著還不知道的遠方跑去。",mood:"冒險・向前・自由"},
+ {title:"MOVE (T5)",album:"REBOOT",lang:"韓文／小分隊",tags:["confidence","night","energy"],desc:"成熟又俐落的舞台氛圍，適合喜歡魅力反差的你。",mood:"成熟・俐落・魅力"},
+ {title:"B.O.M.B",album:"REBOOT",lang:"韓文",tags:["romance","bright","energy"],desc:"心動像煙火一樣突然炸開，藏也藏不住。",mood:"心動・爆發・甜酷"},
+ {title:"STUPID",album:"REBOOT",lang:"韓文",tags:["nostalgia","romance","comfort"],desc:"帶著青春裡不太聰明卻真實的情緒。",mood:"青春・真實・微酸"},
+ {title:"WONDERLAND",album:"REBOOT",lang:"韓文",tags:["dream","adventure","bright"],desc:"像打開未知世界的入口，適合相信奇蹟的人。",mood:"奇幻・探索・明亮"},
+ {title:"B.O.M.B (kaboom ver.)",album:"數位單曲",lang:"正式改編版本",tags:["energy","bright","confidence"],desc:"把原本的心動能量再放大，適合想把房間變舞池的你。",mood:"高能量・歡樂・舞台"},
+ {title:"KING KONG",album:"數位單曲",lang:"韓文",tags:["confidence","energy","night"],desc:"厚重節奏和強勢氛圍，像在黑暗裡亮起自己的招牌。",mood:"強勢・暗色・自信"},
+ {title:"LAST NIGHT",album:"數位單曲",lang:"韓文",tags:["night","nostalgia","romance"],desc:"像一段還不想結束的夜晚，留著甜蜜與一點不捨。",mood:"夜晚・浪漫・不捨"},
+ {title:"YELLOW",album:"PLEASURE",lang:"韓文",tags:["bright","hope","summer"],desc:"帶著明亮的青春色彩，適合想讓心情重新開機的你。",mood:"明亮・希望・青春"},
+ {title:"SARURU",album:"PLEASURE",lang:"韓文",tags:["bright","energy","friendship"],desc:"俏皮、輕快，像和朋友共享的小秘密。",mood:"俏皮・活力・友情"},
+ {title:"PARADISE",album:"LOVE PULSE",lang:"韓文",tags:["dream","romance","comfort"],desc:"把喜歡的人和美好時刻想像成自己的小小天堂。",mood:"夢幻・浪漫・安心"},
+ {title:"EVERYTHING",album:"LOVE PULSE",lang:"韓文",tags:["romance","warm","hope"],desc:"情感濃度很高，適合願意認真對待心意的你。",mood:"深情・溫暖・告白"},
+ {title:"NOW FOREVER",album:"LOVE PULSE",lang:"韓文",tags:["hope","friendship","comfort"],desc:"像把此刻好好收進口袋，期待未來也能一起走。",mood:"陪伴・希望・長久"},
+ {title:"BETTER THAN ME",album:"LOVE PULSE",lang:"韓文",tags:["nostalgia","romance","night"],desc:"有些情緒帶著比較、遺憾與不容易說出口的心事。",mood:"心事・微酸・夜晚"},
+ {title:"IF I",album:"NEW WAV",lang:"韓文",tags:["confidence","hope","adventure"],desc:"不被別人的目光動搖，試著相信自己的可能性。",mood:"自信・成長・向前"},
+ {title:"ZOOM ZOOM",album:"NEW WAV",lang:"韓文",tags:["romance","energy","adventure"],desc:"情緒突然加速，像還沒反應過來就已經心動。",mood:"速度感・心動・活力"},
+ {title:"NALLY-NA (HYUNHAYO)",album:"NEW WAV",lang:"韓文／小分隊",tags:["energy","confidence","friendship"],desc:"爆發力十足，適合想把整個世界音量調大的你。",mood:"爆發・舞台・熱鬧"},
+ {title:"DANGER",album:"NEW WAV",lang:"韓文",tags:["night","romance","confidence"],desc:"危險又迷人的拉扯感，像明知道卻仍想靠近。",mood:"危險感・曖昧・夜色"},
+ {title:"BEAUTIFUL",album:"日本正式發行",lang:"日文",tags:["warm","hope","dream"],desc:"溫暖而有希望感，像把珍貴的人放進故事裡。",mood:"溫暖・希望・動畫感"},
+ {title:"Here I Stand",album:"日本正式發行",lang:"日文",tags:["hope","confidence","adventure"],desc:"帶著堅定向前的力量，適合正在努力跨出一步的你。",mood:"堅定・希望・前進"},
+ {title:"REVERSE",album:"日本正式發行／OST",lang:"日文",tags:["night","dream","romance"],desc:"帶著戲劇感與命運轉折的氛圍，像故事突然翻頁。",mood:"戲劇感・神祕・轉折"}
+];
+const members = [
+ {name:"崔玹碩",eng:"CHOI HYUN SUK",emoji:"🦔",tagline:"SWAG 外殼裡藏著柔軟的刺蝟心",desc:"如果你先被他的舞台氣場吸引，接著卻因為他認真又柔軟的一面留下來，那很合理。玹碩身上有很鮮明的 Rapper 魅力，也有把團隊放在心上的細膩感。看他在舞台上切換表情，再回頭看團體內容裡那些自然流露的反應，很容易發現：酷不是他的全部，感性也不是他的弱點。",why:"你可能會被外表有主見、做事有衝勁，內心卻很重感情的人吸引。玹碩的魅力就在這種反差裡：舞台上能量很強，談到在乎的人和事時，又能看見柔軟的一面。你選的答案或許也透露出，你欣賞的不只是耀眼，而是耀眼背後那份真心。",watch:"CHOI HYUN SUK stage & TREASURE MAP",tags:["energy","care","humor","creative"]},
+ {name:"志焄",eng:"JIHOON",emoji:"🐶",tagline:"可靠隊長 × 氣氛製造機",desc:"志焄很適合用「舞台和團綜都要看」的方式入坑。舞台上，他能把表演的能量穩穩送到觀眾面前；回到團體內容，又常能接住話題、帶動氣氛。隊長的責任感和愛鬧的那一面並不衝突，反而讓人看到他不只有認真可靠，也有讓相處變得輕鬆的魅力。",why:"你可能很習慣先顧好別人的感受，輪到自己的時候，反而會想著「沒關係，我可以再撐一下」。所以，比起只會說漂亮話的人，你可能更容易被會注意細節、也會認真把事情做好的人吸引。志焄有可靠、能扛事的一面，也有很會接話、讓氣氛熱起來的一面。如果你喜歡「可以依靠，但相處起來又不無聊」的類型，那就很值得認識他。",watch:"JIHOON stage & TREASURE MAP",tags:["reliable","humor","energy","care"]},
+ {name:"YOSHI",eng:"YOSHI",emoji:"🐯",tagline:"低調的創作腦，配上舞台上的狠勁",desc:"YOSHI 的魅力不只在 Rap 的節奏和咬字，也在他參與創作時展現的個人色彩。舞台上可以很有氣勢，換到訪談或成員互動裡，又有一種慢慢觀察、活在自己小宇宙的感覺。想認識他，可以把作品和他談音樂、創作的內容一起看；你會更容易理解，那份酷不是單一表情，而是他表達自己的方式。",why:"你可能會被有自己世界、不是每一面都急著展示出來的人吸引。YOSHI 的 Rap 和創作參與讓他有很鮮明的音樂個性，而他在不同內容裡呈現出的安靜感，也讓人想多看一點、多了解一點。你選的答案或許偏向有想法、有個人風格的人——那就從他的作品開始，慢慢解鎖這個小宇宙吧。",watch:"YOSHI rap & T-TALK",tags:["creative","quiet","night","reliable"]},
+ {name:"俊奎",eng:"JUNKYU",emoji:"🐨",tagline:"考拉系柔軟感，笑點卻常常不按牌理出牌",desc:"俊奎有一種很舒服的存在感：唱歌時能聽見自己的音色和情緒，到了團體內容裡，又常因自然反應和出其不意的笑點讓人記住。可愛不是全部，認真投入音樂時的專注也值得看。想入坑的話，可以先聽他的 Vocal，再去看成員互動；那種柔軟與天然感並存的反差，會慢慢變得很有辨識度。",why:"你可能喜歡讓人放鬆、相處時不用一直猜心思的人。俊奎的音色有自己的辨識度，團體內容裡又常有不經意的可愛和笑點，像是不用刻意表演，就能讓氣氛變得柔軟一點。如果你期待的是能讓日常鬆一口氣、又有值得反覆聽的聲音的人，俊奎很值得放進你的觀察名單。",watch:"JUNKYU vocal & T-TALK",tags:["warm","humor","creative","comfort"]},
+ {name:"材赫",eng:"YOON JAE HYUK",emoji:"🦁",tagline:"容易讓人心軟的真誠派，熟了以後也很有笑點",desc:"材赫很容易讓人注意到他溫和、真誠的一面；而當你多看幾段團體內容，也會發現他不只是安靜的暖男形象，還有自然又有點可愛的反應。舞台上的表現和日常裡的害羞感形成反差，讓他的魅力不是一眼就看完的類型。推薦先看現場舞台，再搭配團綜，感受他不同狀態下的樣子。",why:"你可能會被不張揚、卻會用行動讓人感到安心的人打動。材赫給人的印象有溫柔和真誠，也有舞台上更有力量的一面。若你在意的是相處時的舒服感，而不是永遠要成為全場焦點的個性，他或許會慢慢走進你的視線。記得也看看團體內容，因為他的可愛反應常常藏在那些不經意的瞬間裡。",watch:"YOON JAE HYUK stage & TREASURE MAP",tags:["care","warm","quiet","humor"]},
+ {name:"朝光",eng:"ASAHI",emoji:"🤖",tagline:"安靜外星人？其實是有自己美學的創作派",desc:"朝光的魅力很難只用一個形容詞說完：他有安靜、獨特的氣質，也會透過音樂創作表達自己的想法。比起一直站在聚光燈中心，他更像是慢慢打開一個自己的世界，讓人從作品、表情和那些意想不到的反應裡認識他。想入坑，可以從音樂作品和團體內容交叉著看，感受藝術感與反差萌如何同時存在。",why:"你可能會被有自己節奏、不急著迎合所有人的人吸引。朝光身上的獨特感，不只來自安靜的氣質，也能從創作和音樂表達裡找到線索。如果你喜歡慢慢發現一個人的審美、想法和小小怪趣味，那他很值得你花時間認識——有些魅力，本來就不是第一眼全部看懂的。",watch:"ASAHI music & TREASURE MAP",tags:["creative","quiet","dream","night"]},
+ {name:"道榮",eng:"DOYOUNG",emoji:"🐰",tagline:"兔兔外表，舞台上卻能俐落切換模式",desc:"道榮的舞台魅力有種俐落感，跳舞和表演時的能量很容易抓住目光；離開舞台後，則能從成員互動裡看到更自然、親近的一面。若你喜歡觀察表演細節，可以留意他的動作、表情和節奏；若你更在意個性，就接著看團體內容。兩種入口都能讓你慢慢拼出更完整的道榮。",why:"你可能會被看起來親切、但真正做起事來很有衝勁的人吸引。道榮有柔和的外在印象，也有舞台上俐落而集中的表現。如果你喜歡那種平常讓人感到舒服、認真起來又很有魅力的反差，可以先從舞台影片開始，再去看他和成員互動時的樣子。",watch:"DOYOUNG dance & TREASURE MAP",tags:["energy","care","bright","reliable"]},
+ {name:"HARUTO",eng:"HARUTO",emoji:"🦋",tagline:"低音 Rap 一出場，反差感也跟著登場",desc:"HARUTO 最容易被記住的線索之一，是 Rap 時很有辨識度的低沉音色和舞台氣場。但如果只看舞台，可能會錯過他在團體內容裡更自然、直接的一面。建議先看 Rap 舞台感受聲音和表情，再切換到團綜或成員訪談；那種舞台上很有型、日常卻有不同節奏的反差，正是他值得繼續認識的地方。",why:"你可能會先被強烈、有記憶點的氣場吸引，但真正讓你留下來的，往往是反差。HARUTO 的 Rap 音色和舞台表現很有辨識度，而團體內容能讓你看到更生活化的一面。如果你喜歡「第一眼很酷，了解之後還有新發現」的類型，那就從他的 Rap 舞台開始吧。",watch:"HARUTO rap & TREASURE MAP",tags:["confidence","humor","quiet","night"]},
+ {name:"炡禹",eng:"PARK JEONG WOO",emoji:"🐺",tagline:"一開口就抓住耳朵，熟悉後又有親切感",desc:"炡禹的 Vocal 是很好的入坑起點：音色有辨識度，現場演唱也能直接感受到他的表達力。接著看團體內容，會發現他不只是在唱歌時有存在感，和成員相處時也有自然、親切的一面。若你喜歡先被聲音打動，再慢慢對表演者本人產生好奇，那就把他的現場演唱和團體影片排在同一份播放清單裡。",why:"你可能會先被有感染力的聲音或真誠的表達打動。炡禹的 Vocal 很適合成為第一個記住他的理由；再往下看團體內容，就能看到舞台之外更日常的樣子。如果你喜歡一個人既能在表演時抓住注意力，又不會只剩下距離感，那他可能會是很適合你慢慢認識的成員。",watch:"PARK JEONG WOO vocal & TREASURE MAP",tags:["creative","energy","warm","humor"]},
+ {name:"庭煥",eng:"SO JUNG HWAN",emoji:"🐮",tagline:"忙內不只可愛，舞台上的成長也很有看頭",desc:"庭煥是值得把不同時期的舞台放在一起看的成員。除了忙內給人的可愛印象，也可以留意他的表演如何隨著作品和舞台經驗展現不同面貌。搭配團體內容一起看，會比只用「忙內」兩個字認識他更完整。若你喜歡看一個人持續累積、逐漸展現更多面向的過程，庭煥會是很適合慢慢追蹤的對象。",why:"你可能會欣賞願意持續練習、一步步把自己做得更好的人。庭煥的忙內形象是認識他的入口，但不必是全部；把不同時期的舞台放在一起看，更能注意到他的表演變化和成長。如果你喜歡陪著一個人慢慢解鎖新面向，那就從舞台開始，繼續看看他一路走來的樣子。",watch:"SO JUNG HWAN stage & TREASURE MAP",tags:["adventure","energy","reliable","bright"]}
+];
+const songQuestions = [
+ {q:"你意外走進一座陌生城市，現在是凌晨一點。你會？",sub:"第一直覺就好，不用想太久。",opts:[
+  ["走進霓虹閃爍的街道，看看會遇見什麼。","night","energy"],
+  ["找一間還沒打烊的小店，享受安靜。","comfort","warm"],
+  ["搭上末班車，去一個不知道名字的地方。","adventure","dream"],
+  ["拿出相機，把今晚變成一段電影。","nostalgia","creative"]]},
+ {q:"如果朋友要用一種天氣形容你，哪個最貼切？",sub:"選一個最像此刻自己的天氣。",opts:[
+  ["夏天午後雷陣雨，突然充滿能量。","energy","confidence"],
+  ["晴朗冬日，安靜又讓人安心。","comfort","warm"],
+  ["春天微風，自由自在。","adventure","bright"],
+  ["夜晚星空，安靜但有很多想法。","dream","night"]]},
+ {q:"如果你的人生突然變成一部電影，你希望接下來發生什麼？",sub:"你的故事想往哪個方向走？",opts:[
+  ["和朋友展開瘋狂又難忘的冒險。","friendship","energy"],
+  ["遇見讓平凡日常變特別的人。","romance","warm"],
+  ["鼓起勇氣完成一直不敢做的事。","confidence","hope"],
+  ["意外時刻讓我重新理解自己。","nostalgia","dream"]]},
+ {q:"神祕程式送給你一種超能力，你會選哪一個？",sub:"程式正在讀取你的心。",opts:[
+  ["讓所有人都感受到當下的快樂。","bright","friendship"],
+  ["回到過去重新體驗珍貴瞬間。","nostalgia","comfort"],
+  ["無論遇到什麼都重新獲得勇氣。","confidence","hope"],
+  ["看見未來的自己會過什麼生活。","dream","adventure"]]},
+ {q:"畫面突然暗下來，只剩下一個發光的選項。你會選？",sub:"最後一次輸入你的直覺。",opts:[
+  ["一顆不停跳動的心，提醒我勇敢一點。","romance","confidence"],
+  ["一張寫著「別忘記今天」的紙條。","nostalgia","warm"],
+  ["一道通往未知世界的門。","adventure","dream"],
+  ["一顆只有在黑暗中才會發光的星星。","night","creative"]]}
+];
+const memberQuestions = [
+ {q:"你的靈魂動物比較像哪一種？",sub:"不是外表，是直覺。",opts:[["熱情黏人的小狗","care","bright"],["有自己步調的貓","quiet","creative"],["溫柔軟萌的小兔","warm","comfort"],["神祕又聰明的小狐狸","creative","night"]]},
+ {q:"累到不想說話時，你最希望收到哪種訊息？",sub:"哪一句會讓你覺得被理解？",opts:[["走！出去玩一下就會好起來！","energy","friendship"],["不用勉強自己，我陪你慢慢來。","comfort","care"],["你已經做得很好了，真的。","reliable","hope"],["要不要聊聊？我想聽聽你的想法。","creative","warm"]]},
+ {q:"青春電影裡，你最容易被哪種角色吸引？",sub:"選擇你會一直注意的那個人。",opts:[["負責炒熱氣氛的開心果","humor","bright"],["會默默注意細節的人","care","quiet"],["遇到事情很可靠的搭檔","reliable","confidence"],["神祕又常有驚喜的人","creative","dream"]]},
+ {q:"哪一種反差最讓你心動？",sub:"心動雷達啟動。",opts:[["平常很鬧，認真時卻超有魅力","humor","confidence"],["看起來安靜，實際上很溫柔","quiet","care"],["成熟可靠，私下卻很可愛","reliable","warm"],["平常隨性，對喜歡的事很投入","creative","energy"]]},
+ {q:"收到一張未知目的地的車票，你會希望同行的人是？",sub:"你想和什麼樣的能量一起出發？",opts:[["立刻帶我冒險的人","adventure","energy"],["不說話也不尷尬的人","quiet","comfort"],["會把所有事情安排好的人","reliable","care"],["總能想出奇妙點子的人","creative","humor"]]},
+ {q:"你最希望別人理解自己的哪一面？",sub:"這題沒有標準答案。",opts:[["我很努力讓大家都開心","bright","care"],["我話不多，但其實很在乎","quiet","care"],["我一直很努力，也需要被肯定","reliable","hope"],["我有很多想法，希望被理解","creative","dream"]]},
+ {q:"最後，選一顆屬於你的命運寶石。",sub:"把它當成給自己的小小祝福。",opts:[["粉色愛心：溫柔與共鳴","warm","romance"],["藍色星星：自由與想像","dream","adventure"],["紫色寶石：神祕與獨特","creative","night"],["金色太陽：熱情與力量","energy","confidence"]]}
+];
+const $ = s => document.querySelector(s);
+const backdrop=$("#modalBackdrop"), modalContent=$("#modalContent");
+let currentType="",answers=[],qIndex=0,selected=-1,previousScores={};
+function showToast(text){const t=$("#toast");t.textContent=text;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),1500)}
+function openModal(title,html){$("#modalTitle").textContent="▣ "+title;modalContent.innerHTML=html;backdrop.classList.add("show");document.body.style.overflow="hidden"}
+function closeModal(){backdrop.classList.remove("show");document.body.style.overflow="";currentType=""}
+$("#closeModal").addEventListener("click",closeModal);
+backdrop.addEventListener("click",e=>{if(e.target===backdrop)closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+function intro(type){
+ currentType=type;answers=[];qIndex=0;selected=-1;
+ const song=type==="song";
+ openModal(song?"SONG DESTINY.exe":"MEMBER DESTINY.exe",`
+ <div style="text-align:center;padding:12px 0 20px"><div style="font-size:45px;animation:float 2s infinite">${song?"💿":"🪄"}</div>
+ <div class="result-kicker">運命検索プログラム / START</div><h2 class="result-name">${song?"尋找你的命定歌曲":"尋找你的命定成員"}</h2>
+ <p style="line-height:1.8;font-size:13px">程式會問你幾個小問題。<br>請選擇最接近直覺的答案，<br>最後會解鎖一份專屬於你的結果。♡</p>
+ <div class="progress"><div class="progress-inner" style="width:100%"></div></div>
+ <p class="tiny">${song?"5 個問題 · 1 首命定歌曲":"7 個問題 · 1 位命定成員"} · 結果僅供娛樂</p>
+ <button class="btn primary" id="beginQuiz">▶ 開始連線</button></div>`);
+ $("#beginQuiz").addEventListener("click",()=>renderQuestion());
+}
+function renderQuestion(){
+ const qs=currentType==="song"?songQuestions:memberQuestions;
+ selected=-1;
+ const q=qs[qIndex];
+ modalContent.innerHTML=`<div class="progress-label"><span>QUESTION ${String(qIndex+1).padStart(2,"0")} / ${qs.length}</span><span>${Math.round(qIndex/qs.length*100)}% LOADING</span></div>
+ <div class="progress"><div class="progress-inner" style="width:${qIndex/qs.length*100}%"></div></div>
+ <div style="margin-top:22px"><div class="question-count">◆ SELECT YOUR DESTINY</div><h2 class="question">${q.q}</h2><div class="question-sub">${q.sub}</div>
+ <div class="options">${q.opts.map((o,i)=>`<button class="option" data-opt="${i}"><span class="letter">${["A","B","C","D"][i]}</span><span>${o[0]}</span></button>`).join("")}</div></div>
+ <div class="modal-actions"><button class="btn" id="quizBack">${qIndex===0?"✕ 退出":"← 上一題"}</button><button class="btn primary" id="quizNext" disabled>${qIndex===qs.length-1?"揭曉命運 ✦":"下一題 →"}</button></div>`;
+ modalContent.querySelectorAll("[data-opt]").forEach(btn=>btn.addEventListener("click",()=>{
+   modalContent.querySelectorAll("[data-opt]").forEach(b=>b.classList.remove("selected"));
+   btn.classList.add("selected");selected=Number(btn.dataset.opt);$("#quizNext").disabled=false;
+ }));
+ $("#quizBack").addEventListener("click",()=>{if(qIndex===0){closeModal()}else{qIndex--;renderQuestion()}});
+ $("#quizNext").addEventListener("click",()=>{if(selected<0)return;answers[qIndex]=selected;if(qIndex<qs.length-1){qIndex++;renderQuestion()}else{showLoading()}});
+}
+function showLoading(){
+ const type=currentType;
+ modalContent.innerHTML=`<div class="result" style="padding:30px 0"><div class="result-avatar">${type==="song"?"💿":"💜"}</div><div class="result-kicker">CONNECTING TO YOUR DESTINY...</div><h2 class="result-name">運命を解析中</h2><p>星の配置とあなたの直覺を照合しています⋯</p><div class="progress" style="max-width:400px;margin:20px auto"><div class="progress-inner" id="loadingBar"></div></div><p class="tiny" id="loadingText">LOADING MEMORY DATA...</p><div style="font-size:20px;letter-spacing:12px;animation:blink .8s infinite">✦ ♡ ✧</div></div>`;
+ const bar=$("#loadingBar");bar.style.transition="width 1.5s linear";requestAnimationFrame(()=>bar.style.width="100%");
+ const msgs=["READING YOUR VIBE...","SEARCHING THE TREASURE UNIVERSE...","DESTINY FOUND ♡"];
+ let n=0;const interval=setInterval(()=>{n++;const el=$("#loadingText");if(el)el.textContent=msgs[Math.min(n-1,2)];if(n>=3){clearInterval(interval);renderResult(type)}},520);
+}
+function scoreTags(qs,ans){
+ const score={};ans.forEach((optIndex,i)=>{const opt=qs[i].opts[optIndex];score[opt[1]]=(score[opt[1]]||0)+3;score[opt[2]]=(score[opt[2]]||0)+1});
+ return score;
+}
+function bestByTags(items,score){
+ const ranked=items.map((item,index)=>({item,index,score:item.tags.reduce((sum,t)=>sum+(score[t]||0),0)}));
+ ranked.sort((a,b)=>b.score-a.score);
+ // deterministic tie-break by another answer-derived property; no random result
+ const max=ranked[0].score;const tied=ranked.filter(x=>x.score===max);
+ if(tied.length===1)return tied[0];
+ const seed=Object.values(score).reduce((a,b)=>a+b,0);
+ return tied[seed%tied.length];
+}
+// Draw a standalone PNG locally: no external assets, servers or third-party libraries.
+function openShareCard({isSong,chosen,match,reason,avatar}){
+ const W=900,H=1200,scale=2,canvas=document.createElement('canvas');canvas.width=W*scale;canvas.height=H*scale;
+ const c=canvas.getContext('2d');c.scale(scale,scale);c.imageSmoothingEnabled=false;
+ const rect=(x,y,w,h,color)=>{c.fillStyle=color;c.fillRect(x,y,w,h)};
+ const txt=(str,x,y,size=26,color='#50316f',weight='bold',align='left')=>{c.fillStyle=color;c.textAlign=align;c.textBaseline='middle';c.font=`${weight} ${size}px "DotGothic16", "Microsoft JhengHei", sans-serif`;c.fillText(str,x,y)};
+ const wrap=(str,maxWidth,fontSize,maxLines=5)=>{c.font=`bold ${fontSize}px "DotGothic16", "Microsoft JhengHei", sans-serif`;let lines=[],line='';for(const ch of str){if(c.measureText(line+ch).width>maxWidth&&line){lines.push(line);line=ch;if(lines.length===maxLines-1)break}else line+=ch}if(line)lines.push(line);if(lines.join('').length<str.length){let last=lines.length-1;while(c.measureText(lines[last]+'…').width>maxWidth)lines[last]=lines[last].slice(0,-1);lines[last]+='…'}return lines};
+ // 8-bit pixel frame, patterned wallpaper, and chunky window chrome.
+ rect(0,0,W,H,'#e9d9ff');for(let y=0;y<H;y+=36)for(let x=0;x<W;x+=36)if((x/36+y/36)%3===0)rect(x+6,y+6,5,5,'#d4b9f2');
+ rect(38,38,824,1124,'#68498d');rect(30,30,824,1124,'#fffaff');rect(30,30,824,88,'#7750a5');
+ rect(48,48,14,14,'#f6caef');rect(72,48,14,14,'#c7edee');rect(96,48,14,14,'#ead6ff');
+ txt('TREASURE.exe',450,74,35,'#ffffff','bold','center');
+ rect(65,150,770,945,'#f4eaff');rect(78,163,744,919,'#fffaff');
+ txt('✦  DESTINY COLLECTION CARD  ✦',450,204,24,'#9067b6','bold','center');
+ txt(isSong?'YOUR DESTINY SONG':'YOUR DESTINY MEMBER',450,254,25,'#76529c','bold','center');
+ rect(334,297,232,232,'#a07bc6');rect(326,289,232,232,'#ead4f8');rect(338,301,208,208,'#fff7ff');
+ txt(avatar,442,407,100,'#68498d','bold','center');
+ const name=isSong?chosen.title:chosen.name;
+ let size=53;c.font=`bold ${size}px "DotGothic16", sans-serif`;while(c.measureText(name).width>720&&size>26){size-=2;c.font=`bold ${size}px "DotGothic16", sans-serif`}
+ txt(name,450,578,size,'#593781','bold','center');
+ if(!isSong)txt(chosen.eng,450,624,24,'#9270b3','bold','center');
+ rect(220,663,460,80,'#7852a5');rect(230,673,440,60,'#f3dafa');txt('MATCH RATE  '+match+'%  ♡',450,705,34,'#613d86','bold','center');
+ rect(108,784,684,4,'#d3b5ed');
+ const caption=isSong?`你和「${chosen.title}」的緣分，藏在 ${chosen.mood} 的旋律裡。`:`${chosen.tagline}。也許這就是你會想繼續認識 ${chosen.name} 的原因。`;
+ const lines=wrap(caption,652,26,4);lines.forEach((line,i)=>txt(line,450,831+i*47,26,'#624584','bold','center'));
+ txt('✧  這份命運已成功解鎖  ✧',450,1030,25,'#956cb9','bold','center');
+ rect(30,1103,824,51,'#7750a5');txt('FAN-MADE  ·  TREASURE.exe  ·  NOT OFFICIAL',450,1128,19,'#ffffff','bold','center');
+ const dataUrl=canvas.toDataURL('image/png');const blobPromise=new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+ const overlay=document.createElement('div');overlay.className='share-overlay';overlay.setAttribute('role','dialog');overlay.setAttribute('aria-modal','true');overlay.setAttribute('aria-label','分享你的命運結果');
+ overlay.innerHTML=`<div class="share-dialog"><div class="share-title">✦ RESULT CARD UNLOCKED! <button type="button" class="share-close" aria-label="關閉">✕</button></div><div class="share-body"><p>你的專屬像素收藏卡已生成！♡</p><img class="share-preview" alt="TREASURE.exe 專屬結果分享圖卡"><div class="share-actions"><button type="button" class="btn primary" data-save>⬇ 下載 PNG</button><button type="button" class="btn pink" data-share>♡ 分享給朋友</button></div><p class="tiny share-help">如果瀏覽器不支援直接分享圖片，可以先下載，再分享到限時動態或聊天室。</p></div></div>`;
+ document.body.appendChild(overlay);overlay.querySelector('img').src=dataUrl;
+ const close=()=>{document.removeEventListener('keydown',onKey);overlay.remove()};const onKey=e=>{if(e.key==='Escape')close()};document.addEventListener('keydown',onKey);
+ overlay.querySelector('.share-close').addEventListener('click',close);overlay.addEventListener('click',e=>{if(e.target===overlay)close()});
+ const filename='TREASURE-exe-'+(isSong?'song':'member')+'-'+name.replace(/[^a-zA-Z0-9\u3400-\u9fff-]/g,'_')+'.png';
+ const download=()=>{const a=document.createElement('a');a.href=dataUrl;a.download=filename;document.body.appendChild(a);a.click();a.remove()};
+ overlay.querySelector('[data-save]').addEventListener('click',download);
+ overlay.querySelector('[data-share]').addEventListener('click',async()=>{try{const blob=await blobPromise;if(!blob)throw new Error('Image unavailable');const file=new File([blob],filename,{type:'image/png'});if(navigator.canShare?.({files:[file]})&&navigator.share){await navigator.share({files:[file],title:'我的 TREASURE.exe 命運結果',text:'我解鎖了 TREASURE.exe 的命定結果 ♡'});}else{download();overlay.querySelector('.share-help').textContent='這個瀏覽器無法直接分享圖片，已為你下載 PNG，可以從相簿或檔案分享 ♡'}}catch(e){if(e.name!=='AbortError'){download();overlay.querySelector('.share-help').textContent='無法開啟系統分享，已改為下載 PNG ♡'}}});
+}
+function renderResult(type){
+ const score=scoreTags(type==="song"?songQuestions:memberQuestions,answers);
+ const isSong=type==="song";const pool=isSong?songs:members;const chosen=bestByTags(pool,score).item;
+ const total=Object.values(score).reduce((a,b)=>a+b,0)||1;
+ const match=Math.min(99,Math.max(72,Math.round(72+chosen.tags.reduce((s,t)=>s+(score[t]||0),0)/total*27)));
+ const picked=(isSong?songQuestions:memberQuestions).map((q,i)=>q.opts[answers[i]][0]);
+ const reason=isSong
+  ?`你的選擇裡有「${picked[0]}」和「${picked[4]}」的線索，而 ${chosen.title} 的「${chosen.mood}」正好能接住這種情緒。這不代表你只能喜歡這一種歌，而是它很可能會在某個時刻剛好對上你的心情。按下播放，看看它會不會成為你的下一首循環曲。`
+  :chosen.why;
+ const avatar=isSong?"💿":chosen.emoji;
+ const extra=isSong?`<p><b>作品：</b>${chosen.album}</p><p><b>語言／類型：</b>${chosen.lang}</p><p><b>氛圍：</b>${chosen.mood}</p><p>${chosen.desc}</p>`:`<p class="member-tagline">${chosen.tagline}</p><p><b>${chosen.eng}</b></p><p>${chosen.desc}</p><div class="pixel-note"><b>PIXEL NOTE ／ 入坑起點</b><br>先從「${chosen.watch}」開始：先感受舞台或音樂作品，再切換到團體內容，看看舞台以外的反差。</div>`;
+ const officialUrl=isSong?youtubeSearch(chosen.title):youtubeSearch(chosen.watch);
+ modalContent.innerHTML=`<div class="result"><div class="result-kicker">✨ RESULT FOUND / 結果發表！ ✨</div>
+ <div class="result-avatar">${avatar}</div><div class="result-kicker">${isSong?"YOUR DESTINY SONG":"YOUR DESTINY MEMBER"}</div>
+ <h2 class="result-name">${isSong?chosen.title:chosen.name}</h2><div class="score">MATCH RATE　${match}% ♡</div>
+ <div class="result-card"><b>✦ 為什麼是這個結果？</b><p>${reason}</p>${extra}<p class="tiny">※ 配對分數是娛樂性呈現，不代表科學人格評估。</p></div>
+ <div class="result-links"><a href="${officialUrl}" target="_blank" rel="noopener">▶ 專屬入坑影片搜尋</a><a href="${officialYouTube}" target="_blank" rel="noopener">♡ TREASURE 官方 YouTube</a><a href="${officialProfile}" target="_blank" rel="noopener">成員官方資料</a><a href="${officialDiscography}" target="_blank" rel="noopener">💿 官方唱片目錄</a></div>
+ <div class="modal-actions" style="justify-content:center"><button class="btn pink" id="retryBtn">↻ 再測一次</button><button class="btn primary" id="doneBtn">✦ 生成分享圖卡</button></div>
+ <p class="tiny">把這份命運變成專屬像素收藏卡 ♡</p></div>`;
+ $("#retryBtn").addEventListener("click",()=>intro(type));
+ $("#doneBtn").addEventListener("click",()=>openShareCard({isSong,chosen,match,reason,avatar}));
+}
+$("#songStart").addEventListener("click",()=>intro("song"));
+$("#memberStart").addEventListener("click",()=>intro("member"));
+$("#aboutBtn").addEventListener("click",()=>openModal("はじめに.txt",`<h2 class="section-title">はじめまして！</h2><p>歡迎來到 TREASURE.exe。這是一個非官方粉絲企劃，用幾道直覺題帶你找到命定歌曲和命定成員。</p><p>跟著心情選答案就好。也許下一首循環播放的歌，或下一位讓你忍不住多看一眼的人，就在這裡等你。♡</p><p class="tiny">這個網站不是 YG Entertainment 官方網站。</p><button class="btn primary" onclick="document.getElementById('closeModal').click()">了解！</button>`));
+$("#catalogBtn").addEventListener("click",()=>openModal("♡ TREASURE PLAYLIST",`<h2 class="section-title">♡ TREASURE PLAYLIST</h2><p>想多聽幾首嗎？這裡收藏了 ${songs.length} 首歌曲，挑一首開始今天的循環播放吧 ♪</p><div style="max-height:42vh;overflow:auto;border:1px solid #d8c7ef;padding:10px">${songs.map(s=>`<p style="border-bottom:1px dashed #d8c7ef;padding:5px 0;margin:0"><b>${s.title}</b><br><span class="tiny">${s.album} · ${s.lang}</span></p>`).join("")}</div><p><a href="${officialDiscography}" target="_blank" rel="noopener">開啟 YG 官方唱片目錄 ↗</a></p>`));
+$("#membersBtn").addEventListener("click",()=>openModal("♡ 推しメン図鑑",`<h2 class="section-title">TREASURE MEMBER FILES</h2><p>每個人都有讓人心動的不同理由。今天想先認識誰呢？♡ 官方相簿：<a href="https://treasure-official.jp/maker/gallery" target="_blank" rel="noopener">TREASURE MAKER GALLERY ↗</a>。</p><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">${members.map(m=>`<div style="background:#f2e9ff;border:1px solid #d5c2ed;padding:10px"><div style="font-size:25px">${m.emoji}</div><b>${m.name}</b><div class="tiny">${m.eng}</div><div style="font-size:11px;margin-top:5px;font-weight:bold">${m.tagline}</div><p style="font-size:11px;line-height:1.8">${m.desc}</p></div>`).join("")}</div><p><a href="${officialProfile}" target="_blank" rel="noopener">開啟官方成員資料 ↗</a></p>`));
+/* Audio controls installed by TREASURE.exe arcade expansion below. */
+$("#homeBtn").addEventListener("click",()=>{closeModal();window.scrollTo({top:0,behavior:"smooth"});showToast("WELCOME BACK! ♡")});
+function updateClock(){const d=new Date();$("#clock").textContent=d.toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit",hour12:false})}
+updateClock();setInterval(updateClock,30000);
+</script>
+
+<style>
+/* TREASURE.exe : DREAM ARCADE EXPANSION */
+#bootScreen{position:fixed;inset:0;z-index:999;background:radial-gradient(ellipse at 50% 30%,#8056b9,#37234f 75%);display:grid;place-items:center;padding:20px;transition:opacity .55s steps(9,end),visibility .55s;overflow:hidden}
+#bootScreen.dismissed{opacity:0;visibility:hidden;pointer-events:none}
+.boot-card{width:min(570px,95vw);position:relative;text-align:center;background:#f8f0ff;border:5px solid #f5c6fa;outline:5px solid #563778;box-shadow:12px 12px 0 #20162f;padding:clamp(22px,5vw,42px) 18px;animation:bootBounce 1.2s steps(6,end) both}
+.boot-stars{font-size:20px;letter-spacing:16px;color:#a9f4ff;animation:pixelTwinkle 1.6s steps(2,end) infinite}
+.boot-title{font-family:'Press Start 2P','DotGothic16',monospace;font-size:clamp(18px,4.6vw,35px);line-height:1.7;color:#674099;text-shadow:3px 3px #f0c4ff}
+.boot-sub{font-size:12px;letter-spacing:2px;color:#76568e;margin:8px 0 23px}
+#enterArcade{font-size:18px;background:#b89aff;color:#332049;border:3px solid #fff;box-shadow:5px 5px 0 #65408c;padding:13px 27px;cursor:pointer;animation:startPulse 1.4s steps(2,end) infinite}
+#enterArcade:hover{filter:brightness(1.1)}
+.boot-hint{font-size:11px;color:#86679a;margin:18px 0 0;line-height:1.9}
+.arcade-hud{position:fixed;bottom:62px;right:14px;z-index:100;display:flex;align-items:center;gap:8px;background:#faf1ff;border:2px solid #7d58a6;box-shadow:4px 4px 0 #4d356d;padding:7px 9px;color:#674294;font-size:11px}
+.arcade-hud button{border:2px solid #805aa9;background:#e5d3ff;color:#4e3372;cursor:pointer;padding:4px 7px;font-size:11px}
+.arcade-hud button[aria-pressed=true]{background:#c6f4e9}
+#arcadeParticles{position:fixed;inset:0;z-index:110;pointer-events:none;overflow:hidden}
+.pixel-burst{position:fixed;pointer-events:none;font-size:15px;animation:burstOut .7s steps(7,end) forwards;will-change:transform,opacity}
+.window,.panel{animation:windowSpawn .55s steps(7,end) both}
+.modal.show .modal-content,.modal.show .modal-window{animation:windowSpawn .32s steps(5,end)}
+.option.selected{animation:optionPop .2s steps(3,end)}
+.result-avatar{animation:resultHover 1.7s steps(6,end) infinite}
+.result-name{animation:resultReveal .5s steps(5,end) both}
+.progress-inner{background-size:24px 100%;animation:pixelMarch .8s steps(4,end) infinite}
+#arcadeToast{position:fixed;top:18px;left:50%;transform:translateX(-50%);z-index:130;pointer-events:none;color:#fff;background:#5a3b81;border:2px solid #f5d0ff;padding:8px 16px;font-size:11px;opacity:0;transition:opacity .2s}
+#arcadeToast.show{opacity:1}
+@keyframes bootBounce{from{transform:scale(.75);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pixelTwinkle{50%{opacity:.3;transform:translateY(-3px)}}
+@keyframes startPulse{50%{transform:translateY(-3px);box-shadow:5px 8px 0 #65408c}}
+@keyframes windowSpawn{from{opacity:0;transform:translateY(13px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes optionPop{50%{transform:translate(-2px,-2px) scale(1.01)}}
+@keyframes resultHover{50%{transform:translateY(-7px)}}
+@keyframes resultReveal{from{opacity:0;letter-spacing:5px}to{opacity:1;letter-spacing:normal}}
+@keyframes pixelMarch{to{background-position:24px 0}}
+@keyframes burstOut{to{transform:translate(var(--dx),var(--dy)) rotate(45deg) scale(.3);opacity:0}}
+@media(max-width:600px){.arcade-hud{bottom:53px;right:6px;padding:5px;font-size:10px}.boot-stars{letter-spacing:7px}}
+@media(prefers-reduced-motion:reduce){.boot-card,.boot-stars,#enterArcade,.window,.panel,.result-avatar,.result-name,.progress-inner,.pixel-burst{animation:none!important}}
+/* Japanese fan-account / nostalgic SNS details */
+.fan-post{background:#fff;border:2px solid #d8c4ed;padding:12px;box-shadow:4px 4px 0 #dfd0f2;position:relative}
+.fan-post-head{display:flex;align-items:center;gap:9px;color:#563780;font-size:12px}
+.fan-post-head small{display:block;color:#a08eaf;font-size:10px;margin-top:2px}
+.fan-avatar{display:grid;place-items:center;width:36px;height:36px;border:2px solid #ad88d1;background:#f5d6ef;color:#8c5ba9;font-size:20px}
+.fan-sparkle{margin-left:auto;color:#d493c2;font-size:20px}
+.fan-post p{margin:12px 0 8px;line-height:1.9;font-size:13px}
+.fan-translation{font-size:11px;color:#8d78a4}
+.fan-post-tags{font-size:10px;color:#9663ba;overflow-wrap:anywhere;line-height:1.8}
+.fan-post-actions{border-top:1px dashed #e0d0ef;margin-top:10px;padding-top:8px;color:#b08ac4;font-size:11px;letter-spacing:2px}
+.hero:before{content:"✧ ｡ﾟ♡ ⋆｡˚ ✦";position:absolute;top:12px;left:18px;color:#bf94d6;font-size:12px;letter-spacing:4px;pointer-events:none}
+.hero:after{content:"♡ きらきらの予感 ♡";position:absolute;right:12px;bottom:7px;color:#bf94d6;font-size:10px;letter-spacing:1px;pointer-events:none}
+.hero-badges .badge:nth-child(2){background:#fce7f5}
+.jp{font-size:clamp(14px,2.4vw,20px);text-shadow:2px 2px #f6d8ee}
+.fan-sticker{display:inline-block;transform:rotate(-4deg);background:#fbe1f1;color:#885ba8;border:2px dashed #ba91d5;padding:3px 9px;font-size:10px;margin-top:9px}
+@media(prefers-reduced-motion:reduce){.fan-sticker{transform:none}}
+</style>
+<div id="bootScreen" role="dialog" aria-modal="true" aria-labelledby="bootTitle">
+ <div class="boot-card"><div class="boot-stars" aria-hidden="true">✦ ✧ ♡ ✧ ✦</div><div class="boot-title" id="bootTitle">TREASURE.exe</div><div class="boot-sub">♡ YOUR DESTINY IS LOADING ♡</div>
+ <p style="font-size:14px;line-height:2;color:#654785">歡迎來到命運配對遊戲機！<br>準備好解鎖你的命定 TREASURE 了嗎？</p>
+ <button id="enterArcade" type="button">▶ START GAME</button><p class="boot-hint">點擊 START 後播放原創 8-bit BGM ♫<br>右下角可隨時暫停音樂、關閉音效</p>
+ </div>
+</div>
+<div class="arcade-hud" aria-label="遊戲音樂控制"><span>♫ DREAM ARCADE</span><button id="musicToggle" type="button" aria-pressed="false">BGM OFF</button><button id="sfxToggle" type="button" aria-pressed="true">SFX ON</button></div>
+<div id="arcadeParticles" aria-hidden="true"></div>
+<script>
+(()=>{
+ const AC=window.AudioContext||window.webkitAudioContext;
+ let ctx=null, master=null, musicTimer=null, step=0, musicOn=false, sfxOn=true;
+ const musicBtn=document.getElementById('musicToggle'),sfxBtn=document.getElementById('sfxToggle');
+ const soundBtn=document.getElementById('soundBtn');
+ const notes={C4:261.63,D4:293.66,E4:329.63,G4:392,A4:440,B4:493.88,C5:523.25,D5:587.33,E5:659.25,G5:783.99,A5:880};
+ const melody=['E5',null,'G5','A5',null,'G5','E5',null,'D5',null,'E5','G5',null,'E5','D5',null,'C5',null,'E5','G5',null,'A5','G5','E5',null,'D5',null,'C5','D5',null,'E5',null,'C5',null];
+ const bass=['C4','A4','G4','G4','C4','A4','G4','C4'];
+ function ensureAudio(){if(!AC)return false;if(!ctx){ctx=new AC();master=ctx.createGain();master.gain.value=.24;master.connect(ctx.destination)}if(ctx.state==='suspended')ctx.resume().catch(()=>{});return true}
+ function tone(freq,duration=.16,type='sine',volume=.1,when=0){if(!ctx||ctx.state!=='running')return;const t=ctx.currentTime+when;const osc=ctx.createOscillator(),gain=ctx.createGain();osc.type=type;osc.frequency.value=freq;gain.gain.setValueAtTime(.0001,t);gain.gain.exponentialRampToValueAtTime(Math.max(.0002,volume),t+.014);gain.gain.exponentialRampToValueAtTime(.0001,t+duration);osc.connect(gain);gain.connect(master);osc.start(t);osc.stop(t+duration+.025)}
+ function beat(){if(!musicOn||!ctx||ctx.state!=='running')return;const n=melody[step%melody.length];if(n)tone(notes[n],.17,'triangle',.13);if(step%4===0){const b=bass[Math.floor(step/4)%bass.length];tone(notes[b]/2,.3,'sine',.09)}if(step%8===4)tone(740,.035,'square',.013);step++}
+ function updateButtons(){musicBtn.textContent=musicOn?'BGM ON':'BGM OFF';musicBtn.setAttribute('aria-pressed',String(musicOn));sfxBtn.textContent=sfxOn?'SFX ON':'SFX OFF';sfxBtn.setAttribute('aria-pressed',String(sfxOn));if(soundBtn)soundBtn.innerHTML='<span>♫</span> BGM: '+(musicOn?'ON':'OFF')}
+ function setMusic(on){if(on&&!ensureAudio()){showToast('此瀏覽器不支援背景音樂');return}musicOn=on;if(musicTimer){clearInterval(musicTimer);musicTimer=null}if(on){beat();musicTimer=setInterval(beat,225)}updateButtons()}
+ function sfx(kind='select'){if(!sfxOn||!ensureAudio())return;if(kind==='win'){tone(523,.11,'triangle',.14);tone(659,.13,'triangle',.14,.12);tone(784,.25,'triangle',.14,.25)}else if(kind==='next'){tone(520,.055,'square',.038);tone(660,.07,'square',.038,.07)}else{tone(630,.06,'sine',.045)}}
+ musicBtn.addEventListener('click',()=>setMusic(!musicOn));sfxBtn.addEventListener('click',()=>{sfxOn=!sfxOn;updateButtons()});if(soundBtn)soundBtn.addEventListener('click',()=>setMusic(!musicOn));
+ const boot=document.getElementById('bootScreen');document.getElementById('enterArcade').addEventListener('click',()=>{setMusic(true);sfx('win');boot.classList.add('dismissed');setTimeout(()=>{boot.hidden=true},700);sparkle(innerWidth/2,innerHeight/2,22)});
+ function sparkle(x,y,count=8){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const host=document.getElementById('arcadeParticles');for(let i=0;i<count;i++){const el=document.createElement('span');el.className='pixel-burst';el.textContent=['✦','✧','♡','✳'][i%4];el.style.color=['#fff','#e9aaf6','#b1f6f4','#d5b2ff'][i%4];el.style.left=x+'px';el.style.top=y+'px';const a=i*2*Math.PI/count,r=25+(i%4)*15;el.style.setProperty('--dx',Math.cos(a)*r+'px');el.style.setProperty('--dy',Math.sin(a)*r+'px');host.appendChild(el);setTimeout(()=>el.remove(),750)}}
+ document.addEventListener('click',e=>{const target=e.target.closest('button');if(!target||boot.contains(target))return;if(target.matches('.option,[data-opt]')){sfx('select');const r=target.getBoundingClientRect();sparkle(r.right-16,r.top+16,5)}else if(target.matches('#quizNext,#beginQuiz,#songStart,#memberStart')){sfx('next');const r=target.getBoundingClientRect();sparkle(r.left+r.width/2,r.top+r.height/2,7)}},true);
+ const observer=new MutationObserver(()=>{const result=document.querySelector('#modalContent .result-name');if(result&&document.querySelector('#modalContent .score')&&result.dataset.celebrated!=='yes'){result.dataset.celebrated='yes';sfx('win');sparkle(innerWidth/2,Math.min(innerHeight*.42,340),25)}});
+ const content=document.getElementById('modalContent');if(content)observer.observe(content,{childList:true,subtree:true});
+ document.addEventListener('visibilitychange',()=>{if(!ctx)return;if(document.hidden)ctx.suspend();else if(musicOn)ctx.resume().catch(()=>{})});
+ updateButtons();
+})();
+</script>
+
+</body>
+</html>
